@@ -4,7 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import net.ddmax.plantpano.ui.fragment.ExploreFragment;
 import net.ddmax.plantpano.ui.fragment.HomeFragment;
+import net.ddmax.plantpano.ui.fragment.ProfileFragment;
 
 /**
  * @author ddMax
@@ -28,10 +30,10 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
                     fragments[position] = HomeFragment.newInstance();
                     break;
                 case 1:
-                    fragments[position] = HomeFragment.newInstance();
+                    fragments[position] = ExploreFragment.newInstance();
                     break;
                 case 2:
-                    fragments[position] = HomeFragment.newInstance();
+                    fragments[position] = ProfileFragment.newInstance();
                     break;
                 default:
                     break;

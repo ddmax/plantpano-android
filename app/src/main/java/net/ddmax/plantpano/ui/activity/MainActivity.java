@@ -3,24 +3,19 @@ package net.ddmax.plantpano.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import net.ddmax.plantpano.R;
 import net.ddmax.plantpano.adapter.MainViewPagerAdapter;
 import net.ddmax.plantpano.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.viewpager) private ViewPager mViewPager;
-    @BindView(R.id.navigation) private BottomNavigationView mNavigation;
+    @BindView(R.id.viewpager) ViewPager mViewPager;
+    @BindView(R.id.navigation) BottomNavigationView mNavigation;
     private MenuItem prevItem;
 
     @Override
@@ -30,8 +25,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        setUpBottomNavigation();
         setUpViewPager();
-        setUpNavigation();
 
     }
 
@@ -69,7 +64,7 @@ public class MainActivity extends BaseActivity {
         mViewPager.setAdapter(adapter);
     }
 
-    private void setUpNavigation() {
+    private void setUpBottomNavigation() {
         mNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
