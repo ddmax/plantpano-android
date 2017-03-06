@@ -14,4 +14,10 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/title_home" />
 
+    <com.github.clans.fab.FloatingActionMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </com.github.clans.fab.FloatingActionMenu>
+
 </FrameLayout>
