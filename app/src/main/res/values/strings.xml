@@ -4,4 +4,7 @@
     <string name="title_explore">发现</string>
     <string name="title_profile">我的</string>
 
+    <string name="fab_camera_title">拍照</string>
+    <string name="fab_album_title">从相册选取</string>
+
 </resources>

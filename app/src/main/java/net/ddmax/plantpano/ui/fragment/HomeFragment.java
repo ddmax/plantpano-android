@@ -1,30 +1,33 @@
 package net.ddmax.plantpano.ui.fragment;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.provider.MediaStore;
+import android.widget.Toast;
+
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import net.ddmax.plantpano.R;
+import net.ddmax.plantpano.base.BaseFragment;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author ddMax
  * @since 2017-03-01 12:24 PM
  * 说明：首页Fragment
  */
-public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class HomeFragment extends BaseFragment {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public static final int REQUEST_IMAGE_CAPTURE = 1;
 
+    @BindView(R.id.fab_menu) FloatingActionMenu mFam;
+    @BindView(R.id.fab_btn_from_camera) FloatingActionButton mFabCamera;
+    @BindView(R.id.fab_btn_from_album) FloatingActionButton mFabAlbum;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -36,7 +39,6 @@ public class HomeFragment extends Fragment {
      *
      * @return A new instance of fragment HomeFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -45,24 +47,48 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public int getLayoutResId() {
+        return R.layout.fragment_home;
+    }
+
+    @Override
+    protected void finishCreateView(Bundle savedInstanceState) {
+
+    }
+
+    @OnClick(R.id.fab_btn_from_camera)
+    public void onFabCameraClick() {
+        mFam.close(true);
+        startCamera();
+    }
+
+    @OnClick(R.id.fab_btn_from_album)
+    public void onFabAlbumClick() {
+        Toast.makeText(getActivity(), "To select from album", Toast.LENGTH_SHORT).show();
+        mFam.close(true);
+    }
+
+    /**
+     * Take the photo
+     */
+    private void startCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_IMAGE_CAPTURE:
+                    Toast.makeText(getActivity(), "Taking photo successfully", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 }
