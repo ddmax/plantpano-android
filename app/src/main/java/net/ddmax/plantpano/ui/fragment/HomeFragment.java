@@ -3,8 +3,11 @@ package net.ddmax.plantpano.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -12,9 +15,23 @@ import com.github.clans.fab.FloatingActionMenu;
 
 import net.ddmax.plantpano.R;
 import net.ddmax.plantpano.base.BaseFragment;
+import net.ddmax.plantpano.entity.Result;
+import net.ddmax.plantpano.network.ApiService;
+import net.ddmax.plantpano.network.ApiServiceGenerator;
+import net.ddmax.plantpano.ui.activity.ResultActivity;
+import net.ddmax.plantpano.utils.BitmapUtils;
+import net.ddmax.plantpano.utils.FileUtils;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author ddMax
@@ -23,6 +40,7 @@ import butterknife.OnClick;
  */
 public class HomeFragment extends BaseFragment {
 
+    public static final String TAG = HomeFragment.class.getSimpleName();
     public static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @BindView(R.id.fab_menu) FloatingActionMenu mFam;
@@ -69,7 +87,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     /**
-     * Take the photo
+     * Take the image
      */
     private void startCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -83,7 +101,12 @@ public class HomeFragment extends BaseFragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_IMAGE_CAPTURE:
-                    Toast.makeText(getActivity(), "Taking photo successfully", Toast.LENGTH_SHORT).show();
+                    Bundle extras = data.getExtras();
+                    if (extras != null) {
+                        Intent intent = new Intent(getActivity(), ResultActivity.class);
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                    }
                     break;
                 default:
                     break;
