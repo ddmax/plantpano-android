@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import net.ddmax.plantpano.R;
@@ -14,6 +15,7 @@ import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {
 
+    @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.viewpager) ViewPager mViewPager;
     @BindView(R.id.navigation) BottomNavigationView mNavigation;
     private MenuItem prevItem;
@@ -32,7 +34,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initToolBar() {
-
+        mToolbar.setTitle(R.string.app_name);
+        setSupportActionBar(mToolbar);
     }
 
     private void setUpViewPager() {
