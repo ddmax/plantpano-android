@@ -3,6 +3,8 @@
     <color name="colorPrimary">#4CAF50</color>
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorAccent">#8BC34A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black_alpha_45">#71000000</color>
     <color name="primary_light">#C8E6C9</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
@@ -10,4 +12,7 @@
     <color name="divider">#BDBDBD</color>
 
     <color name="window_background">#eaeaea</color>
+    <color name="card_view_background">@color/white</color>
+
+
 </resources>

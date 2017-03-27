@@ -17,11 +17,12 @@ import android.widget.Toast;
 import net.ddmax.plantpano.R;
 import net.ddmax.plantpano.adapter.ResultListAdapter;
 import net.ddmax.plantpano.base.BaseActivity;
-import net.ddmax.plantpano.entity.Result;
+import net.ddmax.plantpano.entity.Image;
 import net.ddmax.plantpano.network.ApiService;
-import net.ddmax.plantpano.network.ApiServiceGenerator;
+import net.ddmax.plantpano.network.RetrofitGenerator;
 import net.ddmax.plantpano.utils.BitmapUtils;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -41,8 +42,9 @@ public class ResultActivity extends BaseActivity {
     @BindView(R.id.image) ImageView mUploadImageView;
     @BindView(R.id.result_list) RecyclerView mResultList;
 
-    private Result resultData;
+    private Image resultData;
     private Bitmap imageBitmap;
+    private Call<Image> call;
 
     @Override
     public void initViews(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class ResultActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             imageBitmap = (Bitmap) bundle.get("data");
+            bundle.getInt("data");
             uploadImage(imageBitmap);
         }
     }
@@ -61,55 +64,57 @@ public class ResultActivity extends BaseActivity {
         // Start progress view
         setUploadProgressShown(true);
 
-        ApiService apiService = ApiServiceGenerator.createService(ApiService.class);
-
+        // TODO: User id/Filename
         // Create RequestBody instance from bitmap
         final RequestBody requestImage = RequestBody.create(
                 MediaType.parse("image/jpeg"),
                 BitmapUtils.bitmapToByte(bitmap)
         );
+
         // MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body = MultipartBody.Part.createFormData(
-                "file",
-                UUID.randomUUID().toString() + ".jpg",
+        MultipartBody.Part imageBody = MultipartBody.Part.createFormData(
+                "image",
+                UUID.randomUUID().toString(),
                 requestImage);
-        // Add another part within the multipart request
-        String descriptionString = "upload for classification";
-        RequestBody description = RequestBody.create(
-                MultipartBody.FORM, descriptionString
-        );
 
         // Finally, call the request
-        Call<Result> call = apiService.upload(description, body);
+        call = RetrofitGenerator.createService(ApiService.class)
+                .upload(RequestBody.create(MultipartBody.FORM, UUID.randomUUID().toString()),
+                        RequestBody.create(MultipartBody.FORM, "true"),
+                        imageBody);
         call.enqueue(uploadCallback);
     }
 
-    Callback<Result> uploadCallback = new Callback<Result>() {
+    Callback<Image> uploadCallback = new Callback<Image>() {
         @Override
-        public void onResponse(Call<Result> call, Response<Result> response) {
-            Log.i(TAG, "Upload successfully!");
-            resultData = response.body();
+        public void onResponse(Call<Image> call, Response<Image> response) {
+            if (response.errorBody() != null) {
+                //TODO: Deal with error body
+                try {
+                    Log.e(TAG, response.errorBody().string());
+                    setUpErrorView();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                resultData = response.body();
 
-            if (resultData != null) {
-                switch (resultData.getCode()) {
-                    case 0:
+                if (resultData != null) {
+                    if (response.code() == 201) {
                         // Setup ImageView
                         mUploadImageView.setImageBitmap(imageBitmap);
                         setUpRecyclerView();
-                        break;
-                    default:
-                        break;
+                    }
                 }
-            } else {
-                Log.e(TAG, "Backend error!");
-                Toast.makeText(ResultActivity.this, getString(R.string.upload_toast_backend_error), Toast.LENGTH_SHORT).show();
             }
+
         }
 
         @Override
-        public void onFailure(Call<Result> call, Throwable t) {
+        public void onFailure(Call<Image> call, Throwable t) {
             t.printStackTrace();
         }
+
     };
 
     private void setUpRecyclerView() {
@@ -122,6 +127,9 @@ public class ResultActivity extends BaseActivity {
     private void setUploadProgressShown(boolean isStart) {
         mProgressView.setVisibility(isStart ? View.VISIBLE : View.GONE);
         mResultList.setVisibility(isStart ? View.GONE : View.VISIBLE);
+    }
+    private void setUpErrorView() {
+
     }
 
     @Override
@@ -150,5 +158,11 @@ public class ResultActivity extends BaseActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        call.cancel();
+        super.onDestroy();
     }
 }

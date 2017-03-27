@@ -10,7 +10,7 @@ public class Constants {
 
     public static final class URL {
 
-        public static final String BASE = "http://10.7.93.142:5000/";
+        public static final String BASE = "http://192.168.3.87:5000/";
 
     }
 }

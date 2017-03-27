@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.ddmax.plantpano.R;
-import net.ddmax.plantpano.entity.Result;
+import net.ddmax.plantpano.entity.Image;
 import net.ddmax.plantpano.utils.NumberUtils;
 
 import java.util.List;
@@ -24,9 +24,9 @@ import butterknife.ButterKnife;
 public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Result.ScoreBean> data;
+    private List<Image.Result> data;
 
-    public ResultListAdapter(Context mContext, List<Result.ScoreBean> data) {
+    public ResultListAdapter(Context mContext, List<Image.Result> data) {
         this.mContext = mContext;
         this.data = data;
     }
@@ -49,7 +49,7 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Result.ScoreBean result = data.get(position);
+        Image.Result result = data.get(position);
         holder.mTextLabel.setText(result.getName());
         holder.mTextScore.setText(
                 NumberUtils.convertToPercent(result.getScore())

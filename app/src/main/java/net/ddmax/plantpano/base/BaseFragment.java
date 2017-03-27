@@ -73,4 +73,6 @@ public abstract class BaseFragment extends Fragment {
     protected void onVisible() {}
 
     protected void onInvisible() {}
+
+    protected void loadData() {}
 }

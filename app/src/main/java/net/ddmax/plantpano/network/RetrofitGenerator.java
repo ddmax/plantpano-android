@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @since 2017-03-06 11:30 PM.
  */
 
-public class ApiServiceGenerator {
+public class RetrofitGenerator {
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()

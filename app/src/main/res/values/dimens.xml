@@ -3,7 +3,30 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!--Global configuration dimen-->
     <dimen name="app_bar_elevation">3dp</dimen>
+    <dimen name="default_tiny_padding">5dp</dimen>
+    <dimen name="default_tiny_margin">3dp</dimen>
+    <dimen name="default_general_margin">10dp</dimen>
 
+    <!--common text size-->
+    <dimen name="default_tiny_text_size">12sp</dimen>
+    <dimen name="default_small_text_size">14sp</dimen>
+    <dimen name="default_medium_text_size">16sp</dimen>
+    <dimen name="default_big_text_size">18sp</dimen>
+    <dimen name="default_big_large_text_size">22sp</dimen>
+
+    <!-- CardView -->
+    <dimen name="card_default_height">190dp</dimen>
+    <dimen name="card_image_default_height">120dp</dimen>
     <dimen name="card_margin">4dp</dimen>
+    <dimen name="card_title_margin">5dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+
+    <!-- Layouts' special resources -->
+    <dimen name="image_info_mini_icons_size">12dp</dimen>
+    <dimen name="image_info_count_text_margin_start">4dp</dimen>
+    <dimen name="image_info_sp_layout_height">150dp</dimen>
+
 </resources>
