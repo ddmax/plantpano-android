@@ -1,11 +1,14 @@
 package net.ddmax.plantpano.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import net.ddmax.plantpano.R;
 import net.ddmax.plantpano.adapter.MainViewPagerAdapter;
@@ -75,11 +78,11 @@ public class MainActivity extends BaseActivity {
                     case R.id.navigation_home:
                         mViewPager.setCurrentItem(0);
                         return true;
-                    case R.id.navigation_dashboard:
-                        mViewPager.setCurrentItem(1);
-                        return true;
+//                    case R.id.navigation_dashboard:
+//                        mViewPager.setCurrentItem(1);
+//                        return true;
                     case R.id.navigation_notifications:
-                        mViewPager.setCurrentItem(2);
+                        mViewPager.setCurrentItem(1);
                         return true;
                 }
                 return false;

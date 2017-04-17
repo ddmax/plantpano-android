@@ -15,4 +15,6 @@
     <string name="msg_empty_image_list">没找到图片呢</string>
     <string name="msg_network_error">网络不给力</string>
     <string name="msg_backend_error">数据加载失败\n点击重试</string>
+
+    <string name="btn_result_confirm">确认是它！</string>
 </resources>

@@ -24,6 +24,9 @@
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
 
+    <!--Card padding -->
+    <dimen name="card_padding">60dp</dimen>
+
     <!-- Layouts' special resources -->
     <dimen name="image_info_mini_icons_size">12dp</dimen>
     <dimen name="image_info_count_text_margin_start">4dp</dimen>

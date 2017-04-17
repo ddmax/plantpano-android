@@ -1,10 +1,10 @@
 package net.ddmax.plantpano.ui.fragment;
 
 
-import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.jph.takephoto.app.TakePhoto;
+import com.jph.takephoto.compress.CompressConfig;
+import com.jph.takephoto.model.LubanOptions;
+import com.jph.takephoto.model.TResult;
 
 import net.ddmax.plantpano.R;
 import net.ddmax.plantpano.adapter.ImageListAdapter;
-import net.ddmax.plantpano.base.BaseFragment;
 import net.ddmax.plantpano.entity.Image;
 import net.ddmax.plantpano.entity.ImageList;
 import net.ddmax.plantpano.network.ApiService;
@@ -26,6 +29,7 @@ import net.ddmax.plantpano.network.RetrofitGenerator;
 import net.ddmax.plantpano.ui.activity.ResultActivity;
 import net.ddmax.plantpano.ui.common.GridSpacingItemDecoration;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,10 +44,10 @@ import retrofit2.Response;
  * @since 2017-03-01 12:24 PM
  * 说明：首页Fragment
  */
-public class HomeFragment extends BaseFragment {
-
+public class HomeFragment extends TakePhotoFragment {
     public static final String TAG = HomeFragment.class.getSimpleName();
-    public static final int REQUEST_IMAGE_CAPTURE = 1;
+    // A flag to present where the image taken from, 0 - camera, 1 - album
+    public static int IMAGE_TAKE_FROM;
 
     @BindView(R.id.image_list) RecyclerView mImageRecyclerView;
     @BindView(R.id.fab_menu) FloatingActionMenu mFam;
@@ -54,6 +58,7 @@ public class HomeFragment extends BaseFragment {
 
     private List<Image> imageListData;
     Call<ImageList> callImageList;
+    private TakePhoto takePhoto;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -79,7 +84,28 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void finishCreateView(Bundle savedInstanceState) {
+        configTakePhoto();
         loadData();
+    }
+
+    /**
+     * Configuration of TakePhoto
+     */
+    private void configTakePhoto() {
+        // Get TakePhoto instance
+        takePhoto = getTakePhoto();
+        // Enable compress
+        int maxSize = 102400;
+        int maxWidth = 800;
+        int maxHeight = 800;
+        CompressConfig config;
+        LubanOptions option = new LubanOptions.Builder()
+                .setMaxSize(maxSize)
+                .setMaxWidth(maxWidth)
+                .setMaxHeight(maxHeight)
+                .create();
+        config = CompressConfig.ofLuban(option);
+        takePhoto.onEnableCompress(config, true);
     }
 
     /**
@@ -153,41 +179,42 @@ public class HomeFragment extends BaseFragment {
     @OnClick(R.id.fab_btn_from_camera)
     public void onFabCameraClick() {
         mFam.close(true);
-        startCamera();
+
+        File file = new File(
+                Environment.getExternalStorageDirectory(),
+                "/temp/" + System.currentTimeMillis() + ".jpg"
+        );
+        if (!file.getParentFile().exists())
+            file.getParentFile().mkdirs();
+        Uri imageUri = Uri.fromFile(file);
+        takePhoto.onPickFromCapture(imageUri);
+        IMAGE_TAKE_FROM = 0;
     }
 
     @OnClick(R.id.fab_btn_from_album)
     public void onFabAlbumClick() {
-        Toast.makeText(getActivity(), "To select from album", Toast.LENGTH_SHORT).show();
         mFam.close(true);
-    }
-
-    /**
-     * Take the image
-     */
-    private void startCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
-        }
+        takePhoto.onPickFromGallery();
+        IMAGE_TAKE_FROM = 1;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_IMAGE_CAPTURE:
-                    Bundle extras = data.getExtras();
-                    if (extras != null) {
-                        Intent intent = new Intent(getActivity(), ResultActivity.class);
-                        intent.putExtras(extras);
-                        startActivity(intent);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
+    public void takeSuccess(TResult result) {
+        super.takeSuccess(result);
+        Intent intent = new Intent(getActivity(), ResultActivity.class);
+        intent.putExtra("image", result.getImage());
+        intent.putExtra("image_from", IMAGE_TAKE_FROM);
+        startActivity(intent);
+    }
+
+    @Override
+    public void takeFail(TResult result, String msg) {
+        super.takeFail(result, msg);
+    }
+
+    @Override
+    public void takeCancel() {
+        super.takeCancel();
     }
 
     @Override
