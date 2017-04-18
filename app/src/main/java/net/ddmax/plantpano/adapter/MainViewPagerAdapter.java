@@ -29,10 +29,10 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
                 case 0:
                     fragments[position] = HomeFragment.newInstance();
                     break;
+//                case 1:
+//                    fragments[position] = ExploreFragment.newInstance();
+//                    break;
                 case 1:
-                    fragments[position] = ExploreFragment.newInstance();
-                    break;
-                case 2:
                     fragments[position] = ProfileFragment.newInstance();
                     break;
                 default:
