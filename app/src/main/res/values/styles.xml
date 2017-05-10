@@ -1,10 +1,5 @@
 <resources>
 
-    <style name="AppTheme" parent="Base.AppTheme">
-    </style>
-
-    <style name="TransparentStatusBarAppTheme" parent="Base.AppTheme">
-    </style>
 
     <!-- Base application theme. -->
     <style name="Base.AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -15,15 +10,50 @@
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 
+    <style name="AppTheme" parent="Base.AppTheme">
+    </style>
+
+    <style name="TransparentStatusBarAppTheme" parent="Base.AppTheme">
+    </style>
+
+    <!-- SettingItem CheckBox style -->
+    <style name="MyCheckBox" parent="AppTheme">
+        <item name="colorControlNormal">#CCCCCC</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
     <!--ToolBar TextSize style-->
     <style name="ToolBar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">16sp</item>
     </style>
 
     <!-- ViewPagerCards style -->
-    <style name="ButtonStyle" parent="Base.Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@color/colorAccent</item>
+    <style name="AccentButton" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorButtonNormal">@android:color/darker_gray</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- customize colorAccent for the enabled color -->
     </style>
 
+    <!-- User page style-->
+    <style name="AppTheme.Dark" parent="AppTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowBackground">@color/colorPrimary</item>
+
+        <item name="colorControlNormal">@color/iron</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/white</item>
+        <item name="android:textColorHint">@color/iron</item>
+
+        <item name="colorButtonNormal">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/iron</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
 
 </resources>

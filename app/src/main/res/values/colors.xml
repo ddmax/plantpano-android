@@ -14,5 +14,10 @@
     <color name="window_background">#eaeaea</color>
     <color name="card_view_background">@color/white</color>
 
+    <color name="ic_settings_notification">#FF9800</color>
+    <color name="ic_settings_history">@color/colorPrimary</color>
+    <color name="ic_settings_favorite">#F44336</color>
+    <color name="ic_settings_setting">#607D8B</color>
+
 
 </resources>

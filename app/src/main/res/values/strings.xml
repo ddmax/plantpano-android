@@ -5,6 +5,8 @@
     <string name="title_profile">我的</string>
     <string name="title_result">识别结果</string>
 
+    <string name="profile_username">未登录</string>
+
     <string name="fab_camera_title">拍照</string>
     <string name="fab_album_title">从相册选取</string>
 

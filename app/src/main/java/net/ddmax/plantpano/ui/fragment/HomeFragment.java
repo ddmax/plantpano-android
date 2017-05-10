@@ -59,6 +59,7 @@ public class HomeFragment extends TakePhotoFragment {
     private List<Image> imageListData;
     Call<ImageList> callImageList;
     private TakePhoto takePhoto;
+    private CompressConfig compressConfig;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -98,14 +99,13 @@ public class HomeFragment extends TakePhotoFragment {
         int maxSize = 102400;
         int maxWidth = 800;
         int maxHeight = 800;
-        CompressConfig config;
         LubanOptions option = new LubanOptions.Builder()
                 .setMaxSize(maxSize)
                 .setMaxWidth(maxWidth)
                 .setMaxHeight(maxHeight)
                 .create();
-        config = CompressConfig.ofLuban(option);
-        takePhoto.onEnableCompress(config, true);
+        compressConfig = CompressConfig.ofLuban(option);
+        takePhoto.onEnableCompress(compressConfig, true);
     }
 
     /**
@@ -187,6 +187,7 @@ public class HomeFragment extends TakePhotoFragment {
         if (!file.getParentFile().exists())
             file.getParentFile().mkdirs();
         Uri imageUri = Uri.fromFile(file);
+        takePhoto.onEnableCompress(compressConfig, true);
         takePhoto.onPickFromCapture(imageUri);
         IMAGE_TAKE_FROM = 0;
     }
@@ -194,6 +195,7 @@ public class HomeFragment extends TakePhotoFragment {
     @OnClick(R.id.fab_btn_from_album)
     public void onFabAlbumClick() {
         mFam.close(true);
+        takePhoto.onEnableCompress(compressConfig, true);
         takePhoto.onPickFromGallery();
         IMAGE_TAKE_FROM = 1;
     }

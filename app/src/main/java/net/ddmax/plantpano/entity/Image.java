@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -79,9 +80,11 @@ public class Image implements Parcelable {
         this.imageLink = in.readString();
         this.isPub = in.readByte() != 0;
         this.userId = in.readString();
+        this.result = new ArrayList<>();
         in.readList(this.result, Result.class.getClassLoader());
         this.review = in.readInt();
         this.likeit = in.readInt();
+        this.comments = new ArrayList<>();
         in.readList(this.comments, Comment.class.getClassLoader());
     }
 

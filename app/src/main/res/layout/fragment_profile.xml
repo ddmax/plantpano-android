@@ -1,12 +1,71 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.ddmax.plantpano.ui.fragment.ProfileFragment">
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/head_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/title_profile" />
+        android:layout_height="164dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/image_head"
+            android:src="@drawable/ic_account_circle_white_24dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/profile_username"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+
+    <net.ddmax.plantpano.ui.custom.SettingItem
+        android:id="@+id/item_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftIcon="@drawable/ic_settings_notification"
+        app:leftIconTint="@color/ic_settings_notification"
+        app:leftText="消息通知" />
+
+    <net.ddmax.plantpano.ui.custom.SettingItem
+        android:id="@+id/item_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:leftIcon="@drawable/ic_settings_history"
+        app:leftIconTint="@color/ic_settings_history"
+        app:leftText="历史鉴定" />
+
+    <net.ddmax.plantpano.ui.custom.SettingItem
+        android:id="@+id/item_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:leftIcon="@drawable/ic_settings_favorite"
+        app:leftIconTint="@color/ic_settings_favorite"
+        app:leftText="我的收藏" />
+
+    <net.ddmax.plantpano.ui.custom.SettingItem
+        android:id="@+id/item_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:leftIcon="@drawable/ic_settings_setting"
+        app:leftIconTint="@color/ic_settings_setting"
+        app:leftText="设置" />
+
+</LinearLayout>

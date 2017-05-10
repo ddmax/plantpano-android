@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import com.jph.takephoto.model.TImage;
 import com.squareup.picasso.Picasso;
 
+import net.ddmax.plantpano.Constants;
 import net.ddmax.plantpano.R;
 import net.ddmax.plantpano.base.BaseActivity;
 import net.ddmax.plantpano.entity.Image;
@@ -57,11 +58,22 @@ public class ResultActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        TImage image = (TImage) getIntent().getSerializableExtra("image");
-        int from = getIntent().getIntExtra("image_from", 0);
+        Image imageObj = getIntent().getParcelableExtra("image_obj");
+        if (imageObj != null) {
+            // From HomeFragment RecyclerView item click
+            resultData = imageObj;
+            Picasso.with(ResultActivity.this)
+                    .load(Constants.URL.BASE + resultData.getImageLink())
+                    .into(mUploadImageView);
+            setUpCardAdapter();
+        } else {
+            // From upload
+            TImage image = (TImage) getIntent().getSerializableExtra("image");
+            int from = getIntent().getIntExtra("image_from", 0);
 
-        processImage(image, from);
-        uploadImage(image);
+            processImage(image, from);
+            uploadImage(image);
+        }
     }
 
     /**
@@ -70,6 +82,8 @@ public class ResultActivity extends BaseActivity {
     private void processImage(TImage image, int from) {
         if (from == 1) {
             imageFile = BitmapUtils.convertFileToJpeg(image.getCompressPath());
+        } else {
+            imageFile = new File(image.getCompressPath());
         }
     }
 
@@ -136,7 +150,7 @@ public class ResultActivity extends BaseActivity {
     private void setUpCardAdapter() {
         setUploadProgressShown(false);
 
-        mCardAdapter = new CardPagerAdapter();
+        mCardAdapter = new CardPagerAdapter(this);
         if (resultData != null) {
             for (Image.Result result : resultData.getResult()) {
                 mCardAdapter.addCardItem(new CardItem(result.getName(), result.getScore()));
@@ -189,7 +203,9 @@ public class ResultActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        call.cancel();
+        if (call != null) {
+            call.cancel();
+        }
         super.onDestroy();
     }
 }
